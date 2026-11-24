@@ -1,16 +1,16 @@
-async function criar (){
+async function criar() {
     const id = document.getElementById('id').value
     const cpf = document.getElementById('cpf').value
     const email = document.getElementById('email').value
     //Realizar a requisição para o back
     const response = await fetch(
-        'http://localhost:3000/cadastro/pessoas',
+        'http://localhost:3000/api/v1/pessoa',
         {
             method: "POST",
-            headers:{
-                "content-Type" : "application/json"
+            headers: {
+                "content-Type": "application/json"
             },
-            body: JSON.stringify({ id, cpf, email})
+            body: JSON.stringify({ id, cpf, email })
         }
     )
     const data = await response.json()
@@ -20,16 +20,16 @@ async function criar (){
     resultado.innerText = data.message
 }
 
-async function buscartodos (){
+async function buscartodos() {
     // puxar os dados para exibir com um get listando todos os cadastros
     //fetch
-    const response = await fetch('http://localhost:3000/listar/pessoas')
+    const response = await fetch('http://localhost:3000/api/v1/pessoas')
     const data = await response.json()
 
     const lista = document.getElementById("listaUsuarios")
     lista.innerHTML = ""
 
-    data.pessoas.forEach(pessoa =>{
+    data.pessoas.forEach(pessoa => {
         const li = document.createElement("li")
         li.innerText = "ID: " + pessoa.id + "CPF: " + pessoa.cpf + "Email: " + pessoa.email
         lista.appendChild(li)
@@ -39,9 +39,9 @@ async function buscartodos (){
 
     console.log(data)
 }
-function alterar (){
+function alterar() {
     alert('alterar')
 }
-function deletar (){
+function deletar() {
     alert('deletar')
 }
