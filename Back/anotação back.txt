@@ -1,0 +1,263 @@
+anotação back
+
+===========================================
+
+Ambiente e configuração 
+
+npm init 
+
+npm i express
+
+Em type sempre colocar para module
+
+em scripts colocar a seguinte linha dentro do código -> package.json ("dev": "node --watch index.js") e npm run dev para subir o servidor essa script faz que o servidor reinicie toda vez que for salvo deixando as alteraçoes 
+
+===========================================
+
+No arquivo index na raiz das pastas
+
+import express from 'express';
+import db from './repository/index.js';
+ 
+const app = express() -- Sempre no inicio do programa
+app.use(express.json()) -- Sempre no inicio do programa
+ 
+//C
+app.post("/api/v1/pessoa", (req, res) => {
+    //id, cpf, email
+    const { id, cpf, email } = req.body
+ 
+    if (!id || !cpf || !email) {
+        //avisar q é para enviar tudo
+        res.send({ message: "Falta de informação" })
+        return
+    }
+    //cadastrar
+    db.push({ id, cpf, email })
+    res.send({ message: "Pessoa criada com sucesso!" })
+})
+
+app.get("/api/v1/pessoas", (req, res) => {
+    res.send({message: "Pessoa encontrada com sucesso", db})
+ })
+
+//R
+app.get("/api/v1/pessoa/:id", (req, res) => {
+    const id = Number(req.params.id)
+
+    const pessoa = db.find(p => p.id === id)
+
+    if(!pessoa) {
+        res.status(404).send({message: "Pessoa não encontrada!"})
+        return
+    }
+    res.send({message: "Pessoa encontrada com sucesso", pessoa})
+ })
+//U
+app.put("/api/v1/pessoa/:id", (req, res) => { 
+    const id = Number(req.params.id)
+    const {email} = req.body
+    const pessoa = db.find(it => it.id === id)
+
+    if(!pessoa) {
+        res.status(404).send({message: "Pessoa não encontrada!"})
+        return
+    }
+    
+    pessoa.email = email
+    res.send({message: "Pessoa alterada com sucesso"})
+})
+//D
+app.delete("/api/v1/pessoa/:id", (req, res) => {
+    const id = Number(req.params.id)
+
+    const index = db.findIndex(it => it.id === id)
+
+    if(index === -1) {
+        res.status(404).send({message: "Pessoa não encontrada"})
+        return
+    }
+
+    db.splice(index, 1)
+
+    res.send({message: "Pessoa deletada com sucesso!"})
+
+ })
+ 
+app.listen(3000, () => {
+    console.log(`Servidor rodando em http://localhost:${3000}`);
+});
+
+
+// res.send() → envia resposta com status padrão 200,
+// res.status(404).send() → envia resposta com status 404
+// p.id e it.id → não têm diferença; são apenas nomes diferentes para o mesmo elemento percorrido pelo find().
+
+===========================================
+
+numa pasta repositor crie um arquivo e coloque esse código para fazer o banco em formato de vetor
+
+const db = new Array()
+
+export default db
+
+
+
+Deixar já com um pré cadastro para não reiniciar do zero toda vez que for reiniciado o servidor 
+
+const db = [
+    {
+        id: 1,
+        cpf: "12345678901",
+        email: "caio@email.com"
+    },
+    {
+        id: 2,
+        cpf: "98765432100",
+        email: "andreia@email.com"
+    },
+    {
+        id: 3,
+        cpf: "45678912345",
+        email: "andre@email.com"
+    }
+]
+
+export default db
+
+===========================================
+
+Postman 
+
+
+Get - pega as informacões
+Post - Enviar as informacões (Cria)
+Put - Atualiza as informacões
+Delete - Deleta as informacões
+
+
+status 200 indica que a requisição feita pelo cliente ao servidor foi bem-sucedida
+
+status 404 indica que o navegador conseguiu se comunicar com o servidor, mas o servidor não conseguiu encontrar o recurso solicitado -> geralmente é porque não tem o dado em especifico ou porque não encotrou a rota que você está tentando acessar
+
+status 500 indica que o servidor encontrou uma condição inesperada e não conseguiu concluir a solicitação do usuário
+
+
+Findall = Pegar todos 
+
+Metodo GET 
+Utiliza apenas a rota pegar todos não tendo necessidade do indentificador 
+
+exemplo:
+GET -> localhost:3000/api/v1/pessoas
+
+
+
+FindOne = Pegar um 
+
+Metodo GET 
+Utiliza a rota pegar e tem necessidade do indentificador 
+
+exemplo:
+GET -> localhost:3000/api/v1/pessoa/1 
+o identificado vai variar pela posição que está armazenado no banco de dados "vetor"
+
+
+Create = criar
+
+Metodo POST
+Utiliza a rota e dentro do corpo da requisição tem o objeto que vai as informaçoes que são solictadas 
+
+exemplo:
+POST -> localhost:3000/api/v1/pessoa
+
+body 
+raw -- json
+
+{
+    id: 1,
+    cpf: "12345678901",
+    email: "caio@email.com"
+}
+
+
+
+Update = Atualizar
+
+Metodo PUT
+Utiliza a rota e o ID e dentro do corpo da requisição tem o objeto que vai as informaçoes que são solictadas 
+
+exemplo:
+PUT -> localhost:3000/api/v1/pessoa/1
+
+body 
+raw -- json
+
+{
+    cpf: "98765432100",
+    email: "andreia@email.com"
+}
+
+Antes o GET puxava assim 
+id: 1,
+cpf: "12345678901",
+email: "caio@email.com"
+
+Após a atualização o metodo GET vai puxar assim
+id 1,
+cpf: "98765432100",
+email: "andreia@email.com"
+
+
+
+Delete = Deletar
+
+Metodo DELETE
+Utiliza a rota pegar e tem necessidade do indentificador 
+
+exemplo:
+DELETE -> localhost:3000/api/v1/pessoa/1 
+o identificado vai variar pela posição que está armazenado no banco de dados "vetor"
+
+
+
+===========================================
+
+Observação durantes os teste realizados no Postman para desktop o metado delete apresentou um erro de requisição mas não apareceu na extenção do VScode então caso aconteça o seguinte erro tente usar outro negocio para testar a requisição como o Postman no VScode ou utiliza o thunder 
+
+erro em questão:
+
+Could not send request
+    Error:Invalid input for model "ExtendedHTTPRequest.Linked"
+
+
+Outra coisa que ocorre no codigo por conta de não ter uma validação pode ser registrado mais de um mesmo id então quando for criar sempre prestar a atenção no id que está cirando para armazenar no vetor
+
+
+Sempre quando fazer uma função que puxe id precisa colocar o Number por conta que o JavaScript sempre lê como string ai para pegar os valores precisa estar indentificado como number a requisição
+
+exemplo:
+    const id = Number(req.params.id)
+
+
+em caso de erros tente usar o console.log para ver se realmenmte está sendo puxado a função correta e se os valores estão sendo passados foi assim que descobri que o erro era por conta do Postmam de desktop
+
+app.delete("/api/v1/pessoa/:id", (req, res) => {
+
+    console.log("deletado") <- quando fazia a requisição no Postmam de desktop não aparecia essa mensagem no terminal do VScode ai quando usei a extenção apreceu no terminal então fica mais facil de decobrir o erro 
+
+    const id = Number(req.params.id)
+
+    const index = db.findIndex(it => it.id === id)
+
+    if (index === -1) {
+        res.status(404).send({ message: "Pessoa não encontrada" })
+        return
+    }
+
+    db.splice(index, 1)
+
+    res.send({ message: "Pessoa deletada com sucesso!" })
+
+})
+
