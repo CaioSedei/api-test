@@ -1,5 +1,5 @@
 async function criar() {
-    const id = document.getElementById('id').value
+    const id = Number(document.getElementById('id').value)
     const cpf = document.getElementById('cpf').value
     const email = document.getElementById('email').value
     //Realizar a requisição para o back
@@ -39,9 +39,52 @@ async function buscartodos() {
 
     console.log(data)
 }
-function alterar() {
-    alert('alterar')
+
+async function alterar() {
+    const id = document.getElementById('id').value
+    const email = document.getElementById('email').value
+
+    const response = await fetch(
+        `http://localhost:3000/api/v1/pessoa/${id}`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email
+            })
+        }
+    )
+
+    const data = await response.json()
+
+    document.getElementById('resultado').innerText =
+        data.message
+    buscartodos()
+
+
 }
-function deletar() {
-    alert('deletar')
+
+async function deletar() {
+    const id = document.getElementById('id').value
+
+    if (!id) {
+        alert("Informe o ID")
+        return
+    }
+
+    const response = await fetch(
+        `http://localhost:3000/api/v1/pessoa/${id}`,
+        {
+            method: "DELETE"
+        }
+    )
+
+    const data = await response.json()
+
+    document.getElementById('resultado').innerText =
+        data.message || "Registro removido com sucesso"
+
+    buscartodos()
 }

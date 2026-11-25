@@ -1,3 +1,144 @@
-body{
-    
+/* Remove espaçamentos padrão do navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Define estilo geral da página */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    padding: 30px;
+}
+
+/* Área principal */
+main {
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Cabeçalho */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #666;
+}
+
+/* Cartões das seções */
+section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos das seções */
+section h2 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+section span {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Organização dos campos */
+.fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Cada campo individual */
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Texto do label */
+.field span {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Inputs */
+.field input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Efeito ao clicar no input */
+.field input:focus {
+    outline: none;
+    border-color: #0066cc;
+}
+
+/* Área dos botões */
+.action {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Estilo geral dos botões */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+
+/* Botão principal */
+.primary {
+    background-color: #28a745;
+}
+
+/* Botões secundários */
+.secundary {
+    background-color: #007bff;
+}
+
+/* Botão de exclusão */
+.danger {
+    background-color: #dc3545;
+}
+
+/* Efeito ao passar o mouse */
+button:hover {
+    opacity: 0.9;
+}
+
+/* Feedback das operações */
+.feedback {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* Lista de usuários */
+#listaUsuarios {
+    margin-top: 15px;
+    list-style: none;
+}
+
+/* Cada item da lista */
+#listaUsuarios li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
